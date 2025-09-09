@@ -1,7 +1,7 @@
 ---
 ## Front matter
-title: "Индивидуальный проект. Этап 5"
-subtitle: "Дисциплина: Основы информационной безопасности"
+title: "Лабораторная работа №1"
+subtitle: "Дисциплина: Сетевые технологии"
 author: "Жибицкая Евгения Дмитриевна"
 
 ## Generic otions
@@ -25,8 +25,8 @@ documentclass: scrreprt
 polyglossia-lang:
   name: russian
   options:
-	- spelling=modern
-	- babelshorthands=true
+  - spelling=modern
+  - babelshorthands=true
 polyglossia-otherlangs:
   name: english
 ## I18n babel
@@ -70,79 +70,239 @@ header-includes:
 
 # Цель работы
 
-Завершение выполнения индивидуального проекта. Знакомство и освоение Burp Suite.
+ Знакомство с Octave, получение навыков по работе с ним.
+ Изучение методов кодирования и модуляции сигналов с помощью высокоуровнего языка программирования Octave. Определение спектра и параметров
+сигнала. Демонстрация принципов модуляции сигнала на примере аналоговой
+амплитудной модуляции. Исследование свойства самосинхронизации сигнала
 
 
 # Выполнение лабораторной работы
 
-Запустим сервер для работы с DVWA (рис. [-@fig:001]).
+Для выполнения работы устанавливаем Octave c помощью Chocolatey(рис. [-@fig:001]).
 
-![Запуск mysql и apache2](image/1.jpg){#fig:001 width=70%}
-
-Далее запускаем сам burpsuite.
-
-Burp Suite представляет собой набор мощных инструментов безопасности веб-приложений, которые демонстрируют реальные возможности злоумышленника, проникающего в веб-приложения(рис. [-@fig:002]).
-
-![Запуск burpsuite](image/2.jpg){#fig:002 width=70%}
-
-После необходимо его настроить. Для этого в настройках соединения указываем 127.0.0.1 - наш  сервер в http proxy(рис. [-@fig:003]),  проверяем настройки приложения(рис. [-@fig:004]), ставим интерсепт в режим on(рис. [-@fig:005]). 
-
-Также устанавливаем на true параметр network.proxy.allow_hijacking_localhost(рис. [-@fig:006]).
-
-![Настройки соединения](image/3.jpg){#fig:003 width=70%}
+![Установка Octave](image/1.jpg){#fig:001 width=70%}
 
 
-![Настройки приложения](image/4.jpg){#fig:004 width=70%}
+Запускаем OCtave GUI, переходим в редактор и создаем новый сценарий plot_sin.m(рис. [-@fig:002]).
 
-![Включение intercept](image/5.jpg){#fig:005 width=70%}
+![Создание сценария](image/2.jpg){#fig:002 width=70%}
 
+Далее добавляем туда листинг(рис. [-@fig:003])
+ и запускаем сценарий, получаем график(рис. [-@fig:004]).
 
-![Параметр network.proxy.allow_hijacking_localhost](image/6.jpg){#fig:006 width=70%}
-
-Переходим непосредственно к работе.
-
-Заходим на DVWA и смотрим, что появляется во вкладке Proxy(рис. [-@fig:007]). Видим, что запросы обновляются(также используем forward)(рис. [-@fig:008]).
-
-![Переход на DVWA](image/7.jpg){#fig:007 width=70%}
+![Код для sin_plot](image/3.jpg){#fig:003 width=70%}
+ 
+![График sin_plot](image/4.jpg){#fig:004 width=70%}
 
 
-![Запросы](image/8.jpg){#fig:008 width=70%}
+Сохраняем сценарий, поменяв ему имя, и строим теперь 2 графика - для синуса и косинуса(рис. [-@fig:005]) и (рис. [-@fig:006]).
 
-Пытаемся авторизоваться и видим внизу появляются введеные данные(рис. [-@fig:009]).
+![Код для sin_cos_plot](image/5.jpg){#fig:005 width=70%}
 
-![Попытка авторизации](image/9.jpg){#fig:009 width=70%}
+![График sin_cos_plot](image/6.jpg){#fig:006 width=70%}
 
-Отправялем запрос в Intruder(рис. [-@fig:010]).
+Затем перейдем к разложению импульсного сигнала в частичный ряд Фурье.
 
-![Перенаправление в Intruder](image/10.jpg){#fig:010 width=70%}
+Создаем новый сценарий meandr.m, вставляем код(рис. [-@fig:007]). Аналогично пишем через синус, результат получаем тот же (рис. [-@fig:008]).
 
-Далее менеям тип атаки на Cluster bomb, меняем(убираем) данные о логине и пароле для дальнейшего подбора(рис. [-@fig:011]).
+![Код для meandr.m](image/7.jpg){#fig:007 width=70%}
 
-![Cluster bomb attack](image/11.jpg){#fig:011 width=70%}
+![Код для meandr.m через синус](image/8.jpg){#fig:008 width=70%}
 
-Заполняем данными таблицы 1 и 2 - для логина и пароля(рис. [-@fig:012]) и запускаем атаку(подбор и анализ)(рис. [-@fig:013]).
+Смотрим на получившийся результат(рис. [-@fig:009]).
 
-![Заполнение данных](image/12.jpg){#fig:012 width=70%}
-.
+![График meandr.m](image/9.jpg){#fig:009 width=70%}
 
-![Атака](image/13.jpg){#fig:013 width=70%}
+Далее определим пектр и параметры сигнала.
 
-На предыдщем рисунке видно, что местоположение не менятеся при неверных вариантах, а вот если посмотреть ниже, на подходящем наборе данных местоположение(location) уже меняется - происходит авторизация - вход успешный(рис. [-@fig:014]).
+Создаем каталог spectre1 и в нем файл spectre.m(рис. [-@fig:010]).
 
-![Успешный подбор](image/14.jpg){#fig:014 width=70%}
+![Создание каталога и файла](image/10.jpg){#fig:010 width=70%}
 
-Изучим также работы repeater. Перенаправим туда любой результат, посмотрим на его ответ в виде render - увидим страницу входа(рис. [-@fig:015]).
+Прописываем код и смотрим на результат(рис. [-@fig:011]).
 
-![Reapeter](image/15.jpg){#fig:015 width=70%}
+![График spectrе.m](image/11.jpg){#fig:011 width=70%}
+
+Дорабатываем код(рис. [-@fig:012]), корректируем график, отбрасывая дублирующие отрицательные частоты и принимая  в расчёт то, что на каждом шаге вычисления быстрого преобразования Фурье происходит суммирование амплитуд сигнало и получаем следующий его вид(рис. [-@fig:013]).
+
+![Доработка кода](image/12.jpg){#fig:012 width=70%}
+
+
+![Исправленный график ](image/13.jpg){#fig:013 width=70%}
+
+Найдем спектр суммы рассмотренных сигналов. Создаем каталог spectr_sum, файл spectre_sum с данным кодом, также полцчаем спектр суммарного сигнала(рис. [-@fig:014]) и (рис. [-@fig:015]).
+
+![Суммарный сигнал](image/14.jpg){#fig:014 width=70%}
+
+
+![Спектр суммарного сигнала ](image/15.jpg){#fig:015 width=70%}
+
+Ознакомимся с амплитудной модуляцией, создадим каталог modulation cо сценарием am.m, увидим, что спектр произведения представляет собой свертку спектров(рис. [-@fig:016])
+
+![Спектр сигнала при амплитудной модуляции ](image/16.jpg){#fig:016 width=70%}
+
+Теперь необходимо получить кодированные сигналы для нескольких кодов, проверить свойства самосинхронизуемости кодов по заданной битовой последовательности.
+
+Создаем для работы каталог coding и в нём файлы main.m,
+maptowave.m,unipolar.m,ami.m,bipolarnrz.m,bipolarrz.m,manchester.m,
+diffmanc.m, calcspectre.m(рис. [-@fig:017])
+
+![Подготовка рабочего пространства ](image/17.jpg){#fig:017 width=70%}
+
+Затем убеждаемся, что у нас установлен пакет signal, последовательно добавляем необходимый код в файлы 
+
+В файле main.m подключаем пакет signal и задаем входные кодовые последовательности:
+% coding/main.m
+% Подключение пакета signal:
+pkg load signal;
+
+% Входная кодовая последовательность:
+data=[0 1 0 0 1 1 0 0 0 1 1 0];
+% Входная кодовая последовательность для проверки
+↪️ свойства самосинхронизации:
+data_sync=[0 0 0 0 0 0 0 1 1 1 1 1 1 1];
+% Входная кодовая последовательность для построения
+↪️ спектра сигнала:
+data_spectre=[0 1 0 1 0 1 0 1 0 1 0 1 0 1];
+% Создание каталогов signal, sync и spectre для
+↪️ размещения графиков:
+mkdir 'signal';
+mkdir 'sync';
+mkdir 'spectre';
+axis("auto");
+
+Затем в этом же файле пропишем вызовы функций для построения графиков
+модуляций кодированных сигналов для кодовой последовательности data:
+% Униполярное кодирование
+wave=unipolar(data);
+plot(wave);
+ylim([-1 6]);
+title('Unipolar');
+print 'signal/unipolar.png';
+% Кодирование ami
+wave=ami(data);
+plot(wave)
+title('AMI');
+print 'signal/ami.png';
+% Кодирование NRZ
+wave=bipolarnrz(data);
+plot(wave);
+title('Bipolar Non-Return to Zero');
+print 'signal/bipolarnrz.png';
+% Кодирование RZ
+wave=bipolarrz(data);
+plot(wave)
+title('Bipolar Return to Zero');
+print 'signal/bipolarrz.png';
+% Манчестерское кодирование
+wave=manchester(data);
+plot(wave)
+title('Manchester');
+print 'signal/manchester.png';
+
+% Дифференциальное манчестерское кодирование
+wave=diffmanc(data);
+plot(wave)
+title('Differential Manchester');
+print 'signal/diffmanc.png';
+
+Затем в этом же файле пропишем вызовы функций для построения графиков модуляций кодированных сигналов для кодовой последовательности
+data_sync:
+% Униполярное кодирование
+wave=unipolar(data_sync);
+plot(wave);
+ylim([-1 6]);
+title('Unipolar');
+print 'sync/unipolar.png';
+% Кодирование AMI
+wave=ami(data_sync);
+plot(wave)
+title('AMI');
+print 'sync/ami.png';
+% Кодирование NRZ
+wave=bipolarnrz(data_sync);
+plot(wave);
+title('Bipolar Non-Return to Zero');
+print 'sync/bipolarnrz.png';
+% Кодирование RZ
+wave=bipolarrz(data_sync);
+plot(wave)
+title('Bipolar Return to Zero');
+print 'sync/bipolarrz.png';
+% Манчестерское кодирование
+wave=manchester(data_sync);
+plot(wave)
+title('Manchester');
+print 'sync/manchester.png';
+
+% Дифференциальное манчестерское кодирование
+wave=diffmanc(data_sync);
+plot(wave)
+title('Differential Manchester');
+print 'sync/diffmanc.png';
+Далее в этом же файле пропишем вызовы функций для построения графиков
+спектров:
+% Униполярное кодирование:
+wave=unipolar(data_spectre);
+spectre=calcspectre(wave);
+title('Unipolar');
+print 'spectre/unipolar.png';
+% Кодирование AMI:
+wave=ami(data_spectre);
+spectre=calcspectre(wave);
+title('AMI');
+print 'spectre/ami.png';
+% Кодирование NRZ:
+wave=bipolarnrz(data_spectre);
+spectre=calcspectre(wave);
+title('Bipolar Non-Return to Zero');
+print 'spectre/bipolarnrz.png';
+% Кодирование RZ:
+wave=bipolarrz(data_spectre);
+spectre=calcspectre(wave);
+title('Bipolar Return to Zero');
+print 'spectre/bipolarrz.png';
+% Манчестерское кодирование:
+wave=manchester(data_spectre);
+spectre=calcspectre(wave);
+title('Manchester');
+print 'spectre/manchester.png';
+% Дифференциальное манчестерское кодирование:
+wave=diffmanc(data_spectre);
+spectre=calcspectre(wave);
+title('Differential Manchester');
+print 'spectre/diffmanc.png';
+
+В остальных файлах прописываем  функции постороения графиков(рис. [-@fig:018]) и (рис. [-@fig:019]).
+
+![Функции ](image/18.jpg){#fig:018 width=70%}
+
+![Фунуции ](image/19.jpg){#fig:019 width=70%}
+
+
+
+Запускаем главный сценарий и получаем следующие результаты(рис. [-@fig:020]), (рис. [-@fig:021]) и (рис. [-@fig:022]).
+
+![Графики ](image/20.jpg){#fig:020 width=70%}
+
+![Графики ](image/21.jpg){#fig:021 width=70%}
+
+![Графики ](image/22.jpg){#fig:022 width=70%}
+
+
+
+
 
 
 
 # Выводы
 
-В ходе работы было произведена знакомство с Burp Suite, произведен анализ работы и  принцип атаки подбора данных для входа
+В ходе работы было произведено знакомство с Octavе.
+ Были также изучены методы кодирования и модуляции сигнала, определены спектры и параметры
+сигнала, продемонстрированы принципы модуляции сигнала на примере аналоговой амплитудной модуляции и исследованы свойства самосинхронизации сигнала
+
+
 
 # Список литературы{.unnumbered}
 
-- Парасрам, Ш. Kali Linux: Тестирование на проникновение и безопасность : Для профессионалов. Kali Linux / Ш. Парасрам, А. Замм, Т. Хериянто, и др. – Санкт-Петербург : Питер, 2022. – 448 сс.
-
-
+[ТУИС](https://esystem.rudn.ru/pluginfile.php/2858347/mod_resource/content/3/001-lab_cod-mod-2.pdf)
